@@ -5,6 +5,16 @@ const fourthline_keyboard = [1103, 1095, 1089, 1084, 1080, 1090, 1100, 1073, 110
 const fifthline_keyboard = [32];
 
 
+var wrapper = document.createElement('div');
+wrapper.className = "wrapper";
+wrapper.id = "wrapper";
+
+var WRAPPER = document.getElementById('wrapper');
+
+var div_textarea = document.createElement('div');
+div_textarea.className = "div_textarea";
+div_textarea.id = "div_textarea";
+
 var textarea = document.createElement('textarea');
 textarea.className = "textarea";
 textarea.placeholder = "Virtual Keyboard"
@@ -107,8 +117,11 @@ Space.innerHTML = "SPACE";
 
 // Make KeyBoard
 
-document.body.prepend(virtual_keyboard);
-document.body.prepend(textarea);
+document.body.prepend(wrapper);
+
+document.getElementById('wrapper').append(virtual_keyboard);
+document.getElementById('wrapper').prepend(div_textarea);
+document.getElementById('div_textarea').prepend(textarea);
 
 document.getElementById('virtual_keyboard').append(div_firstline_keyboard);
 document.getElementById('virtual_keyboard').append(div_secondeline_keyboard);
@@ -149,6 +162,8 @@ function init(){
 
 init();
 
+// Make buttons without charCode
+
 document.getElementById('div_firstline_keyboard').append(Backspace);
 document.getElementById('div_secondeline_keyboard').append(Delete);
 document.getElementById('div_secondeline_keyboard').prepend(Tab);
@@ -166,6 +181,25 @@ document.getElementById('div_fifthline_keyboard').append(R_Ctrl);
 document.getElementById('div_fifthline_keyboard').append(Left);
 document.getElementById('div_fifthline_keyboard').append(Down);
 document.getElementById('div_fifthline_keyboard').append(Right);
+
+// Make click animation for keyboard
+
+document.querySelectorAll('#div_firstline_keyboard div, #div_secondeline_keyboard div, #div_thirdline_keyboard div, #div_fourthline_keyboard div, #div_fifthline_keyboard div').forEach((div) =>{
+    div.addEventListener('mousedown', (event) => {
+        event.target.classList.add('button_active');
+    })
+});
+
+document.querySelectorAll('#div_firstline_keyboard div, #div_secondeline_keyboard div, #div_thirdline_keyboard div, #div_fourthline_keyboard div, #div_fifthline_keyboard div').forEach((div) =>{
+    div.addEventListener('mouseup', (event) => {
+        event.target.classList.remove('button_active');
+    })
+});
+
+
+
+
+
 
 
 
