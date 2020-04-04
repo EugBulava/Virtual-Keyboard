@@ -34,7 +34,8 @@ body{
     border-radius: 20px;
 }
 
-.button{
+.button,
+.additional_button{
     font-family: 'Spicy Rice', cursive;
     display: inline-block;
     border-radius: 10px;
@@ -46,10 +47,17 @@ body{
     text-align: center;
     padding-top: 15px;
     cursor: pointer;
+    transition: 0.7s;
 }
+
+.button::selection,
+.additional_button::selection {
+    background: transparent;
+ }
 
 .button_active{
     box-shadow: -7px -7px rgb(240, 201, 99) inset;
+    transition: 0.1s;
 }
 
 .div_firstline_keyboard,
@@ -92,4 +100,15 @@ body{
     width: 124px;
 }
 
-.ctrl{}
+.diode{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.diode_active{
+    background-color: #017007;
+}
