@@ -45,6 +45,7 @@ body{
     height: 35px;
     margin-left: 10px;
     text-align: center;
+    line-height: 20px;
     padding-top: 15px;
     cursor: pointer;
     transition: 0.7s;
