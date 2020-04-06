@@ -1,11 +1,22 @@
-var lenguage = 'ru';
+var lenguage = '';
 
+if(localStorage.getItem('lenguage') !== null){
+    lenguage = localStorage.getItem('lenguage');
+}else{
+    lenguage = 'ru';
+}
+
+
+
+//console.log(localStorage.getItem(lenguage));
 const key_codes_firstline = ["Backquote", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0", "Minus", "Equal"];
 const key_codes_secondline = ["KeyQ", "KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight", "Backslash"];
 const key_codes_thirdline = ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote"];
 const key_codes_fourthline = ["KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash"];
 const firstline_keyboard_not_shift = ['1', '2', '3','4','5','6','7','8','9','0','-','='];
 
+let capslock_on = 0;
+let pressed_buttons = [];
 
 var wrapper = document.createElement('div');
 wrapper.className = "wrapper";
@@ -205,6 +216,12 @@ function init(){
     document.getElementById('div_fifthline_keyboard').append(Left);
     document.getElementById('div_fifthline_keyboard').append(Down);
     document.getElementById('div_fifthline_keyboard').append(Right);
+
+    if(capslock_on == 1){
+        for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+            document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toUpperCase();
+        }
+    }
 }
 
 init();
@@ -213,23 +230,25 @@ const diode = document.createElement('div');
 diode.className = "diode";
 document.getElementsByClassName('capslock')[0].prepend(diode);
 
+const description = document.createElement('p');
+description.className = "description";
+description.innerHTML = "Keyboard made in Windows OS. Change lenguage = Left-Ctrl + Left-Alt";
+document.getElementById('wrapper').append(description);
+
 // Make click animation for keyboard
 
-    document.querySelector('.virtual_keyboard').addEventListener('mousedown', (event) => {
-        if(event.target.classList.contains('button') || event.target.classList.contains('additional_button')){
-            event.target.classList.add('button_active');
-        }
-    })
+document.querySelector('.virtual_keyboard').addEventListener('mousedown', (event) => {
+    if(event.target.classList.contains('button') || event.target.classList.contains('additional_button')){
+         event.target.classList.add('button_active');
+    }
+})
 
 
-    document.addEventListener('mouseup', (event) => {
-        event.target.classList.remove('button_active');
-        //document.getElementById('textarea').focus();
-        //document.getElementById('textarea').selectionStart = document.getElementById('textarea').value.length;
-    })
-
-let capslock_on = 0;
-let pressed_buttons = [];
+document.addEventListener('mouseup', (event) => {
+    event.target.classList.remove('button_active');
+    //document.getElementById('textarea').focus();
+     //document.getElementById('textarea').selectionStart = document.getElementById('textarea').value.length;
+})
 
 document.addEventListener('keydown', (event) => {
     let karet_curpos = document.getElementById('textarea').selectionStart;
@@ -282,8 +301,19 @@ document.addEventListener('keydown', (event) => {
         }
         if(lenguage == 'ru'){
             var firstline_keyboard_shift = ['!','"','№',';','%',':','?','*','(',')','_','+'];
+            document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = '/';
+            document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = ',';
         } else if(lenguage == 'en'){
             var firstline_keyboard_shift = ['!','@','#','$','%','^','&','*','(',')','_','+'];
+            document.getElementsByClassName('Backquote')[0].innerHTML = '~';
+            document.getElementsByClassName('BracketLeft')[0].innerHTML = '{';
+            document.getElementsByClassName('BracketRight')[0].innerHTML = '}';
+            document.getElementsByClassName('Backslash')[0].innerHTML = '|';
+            document.getElementsByClassName('Semicolon')[0].innerHTML = ':';
+            document.getElementsByClassName('Quote')[0].innerHTML = '"';
+            document.getElementsByClassName('Comma')[0].innerHTML = '<';
+            document.getElementsByClassName('Period')[0].innerHTML = '>';
+            document.getElementsByClassName('Slash')[0].innerHTML = '?';
         }
         for(let i = 1; i<=document.getElementById('div_firstline_keyboard').querySelectorAll('.button').length-1; i++){
             document.getElementById('div_firstline_keyboard').querySelectorAll('.button')[i].innerHTML = firstline_keyboard_shift[i-1];
@@ -328,8 +358,19 @@ document.addEventListener('keydown', (event) => {
         }
         if(lenguage == 'ru'){
             var firstline_keyboard_shift = ['!','"','№',';','%',':','?','*','(',')','_','+'];
+            document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = '/';
+            document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = ',';
         } else if(lenguage == 'en'){
             var firstline_keyboard_shift = ['!','@','#','$','%','^','&','*','(',')','_','+'];
+            document.getElementsByClassName('Backquote')[0].innerHTML = '~';
+                document.getElementsByClassName('BracketLeft')[0].innerHTML = '{';
+                document.getElementsByClassName('BracketRight')[0].innerHTML = '}';
+                document.getElementsByClassName('Backslash')[0].innerHTML = '|';
+                document.getElementsByClassName('Semicolon')[0].innerHTML = ':';
+                document.getElementsByClassName('Quote')[0].innerHTML = '"';
+                document.getElementsByClassName('Comma')[0].innerHTML = '<';
+                document.getElementsByClassName('Period')[0].innerHTML = '>';
+                document.getElementsByClassName('Slash')[0].innerHTML = '?';
         }
         for(let i = 1; i<=document.getElementById('div_firstline_keyboard').querySelectorAll('.button').length-1; i++){
             document.getElementById('div_firstline_keyboard').querySelectorAll('.button')[i].innerHTML = firstline_keyboard_shift[i-1];
@@ -395,9 +436,11 @@ document.addEventListener('keydown', (event) => {
     if(pressed_buttons.length == 2){
         if(lenguage == 'en'){
             lenguage = 'ru';
+            localStorage.setItem('lenguage', 'ru');
             init();
         }else if(lenguage == 'ru'){
             lenguage = 'en';
+            localStorage.setItem('lenguage', 'en');
             init();
         }
     }
@@ -436,6 +479,20 @@ document.addEventListener('keyup', (event) => {
                 document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toUpperCase();
             }
         }
+        if(lenguage == 'ru'){
+            document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = String.fromCharCode(92);
+            document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = '.';
+        }else if(lenguage == 'en'){
+            document.getElementsByClassName('Backquote')[0].innerHTML = '`';
+            document.getElementsByClassName('BracketLeft')[0].innerHTML = '[';
+            document.getElementsByClassName('BracketRight')[0].innerHTML = ']';
+            document.getElementsByClassName('Backslash')[0].innerHTML = String.fromCharCode(92);
+            document.getElementsByClassName('Semicolon')[0].innerHTML = ';';
+            document.getElementsByClassName('Quote')[0].innerHTML = String.fromCharCode(39);
+            document.getElementsByClassName('Comma')[0].innerHTML = ',';
+            document.getElementsByClassName('Period')[0].innerHTML = '.';
+            document.getElementsByClassName('Slash')[0].innerHTML = '/';
+        }
         for(let i = 1; i<=document.getElementById('div_firstline_keyboard').querySelectorAll('.button').length-1; i++){
             document.getElementById('div_firstline_keyboard').querySelectorAll('.button')[i].innerHTML = firstline_keyboard_not_shift[i-1];
         }
@@ -473,6 +530,20 @@ document.addEventListener('keyup', (event) => {
             for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
                 document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toUpperCase();
             }
+        }
+        if(lenguage == 'ru'){
+            document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = String.fromCharCode(92);
+            document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = '.';
+        }else if(lenguage == 'en'){
+            document.getElementsByClassName('Backquote')[0].innerHTML = '`';
+            document.getElementsByClassName('BracketLeft')[0].innerHTML = '[';
+            document.getElementsByClassName('BracketRight')[0].innerHTML = ']';
+            document.getElementsByClassName('Backslash')[0].innerHTML = String.fromCharCode(92);
+            document.getElementsByClassName('Semicolon')[0].innerHTML = ';';
+            document.getElementsByClassName('Quote')[0].innerHTML = String.fromCharCode(39);
+            document.getElementsByClassName('Comma')[0].innerHTML = ',';
+            document.getElementsByClassName('Period')[0].innerHTML = '.';
+            document.getElementsByClassName('Slash')[0].innerHTML = '/';
         }
         for(let i = 1; i<=document.getElementById('div_firstline_keyboard').querySelectorAll('.button').length-1; i++){
             document.getElementById('div_firstline_keyboard').querySelectorAll('.button')[i].innerHTML = firstline_keyboard_not_shift[i-1];
