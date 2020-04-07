@@ -1,0 +1,26 @@
+{
+  "name": "virtual-keyboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "lint": "eslint ./script.js",
+    "lint:fix": "eslint ./script.js --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EugBulava/Virtual-Keyboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EugBulava/Virtual-Keyboard/issues"
+  },
+  "homepage": "https://github.com/EugBulava/Virtual-Keyboard#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2"
+  },
+  "dependencies": {}
+}
