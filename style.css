@@ -1,6 +1,7 @@
 body{
     font-family: 'Spicy Rice', cursive;
     margin: 0;
+    background-color: rgb(236, 161, 90);
 }
 
 .wrapper{
@@ -18,6 +19,7 @@ body{
     border: solid 2px red;
     border-radius: 10px;
     resize: none;
+    background-color: #FFFDD0;
 }
 
 .textarea:focus{

@@ -6,9 +6,6 @@ if(localStorage.getItem('lenguage') !== null){
     lenguage = 'ru';
 }
 
-
-
-//console.log(localStorage.getItem(lenguage));
 const key_codes_firstline = ["Backquote", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0", "Minus", "Equal"];
 const key_codes_secondline = ["KeyQ", "KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight", "Backslash"];
 const key_codes_thirdline = ["KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote"];
@@ -21,8 +18,6 @@ let pressed_buttons = [];
 var wrapper = document.createElement('div');
 wrapper.className = "wrapper";
 wrapper.id = "wrapper";
-
-//var WRAPPER = document.getElementById('wrapper');
 
 var div_textarea = document.createElement('div');
 div_textarea.className = "div_textarea";
@@ -235,17 +230,237 @@ description.className = "description";
 description.innerHTML = "Keyboard made in Windows OS. Change lenguage = Left-Ctrl + Left-Alt";
 document.getElementById('wrapper').append(description);
 
-// Make click animation for keyboard
+// Make click animation for keyboard and functional
 
 document.querySelector('.virtual_keyboard').addEventListener('mousedown', (event) => {
+    let karet_curpos = document.getElementById('textarea').selectionStart;
+
     if(event.target.classList.contains('button') || event.target.classList.contains('additional_button')){
-         event.target.classList.add('button_active');
+        event.target.classList.add('button_active');
+    }
+
+    if(event.target.classList.contains('tab')){
+        event.preventDefault();
+        document.getElementsByClassName('tab')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + "&#9;" + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, document.getElementById("textarea").innerHTML.length);
+    }else if(event.target.classList.contains('backspace')){
+        event.preventDefault();
+        document.getElementsByClassName('backspace')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart-1) + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, (document.getElementById("textarea").innerHTML.length));
+    }else if(event.target.classList.contains('delete')){
+        event.preventDefault();
+        document.getElementsByClassName('delete')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart+1, (document.getElementById("textarea").innerHTML.length));
+    }else if(event.target.classList.contains('capslock')){
+        event.preventDefault();
+        document.getElementsByClassName('capslock')[0].classList.add('button_active');
+        if(capslock_on == 0){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toUpperCase();
+            }
+            document.getElementsByClassName('diode')[0].classList.add('diode_active');
+            capslock_on = 1;
+        }else if(capslock_on == 1){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toLowerCase();
+            }
+            document.getElementsByClassName('diode')[0].classList.remove('diode_active');
+            capslock_on = 0;
+        }
+    }else if(event.target.classList.contains('shift')){
+        event.preventDefault();
+        document.getElementsByClassName('shift')[0].classList.add('button_active');
+        if(capslock_on == 0){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toUpperCase();
+            }
+            if(lenguage == 'ru'){
+                document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = '/';
+                document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = ',';
+            }else if(lenguage == 'en'){
+                document.getElementsByClassName('Backquote')[0].innerHTML = '~';
+                document.getElementsByClassName('BracketLeft')[0].innerHTML = '{';
+                document.getElementsByClassName('BracketRight')[0].innerHTML = '}';
+                document.getElementsByClassName('Backslash')[0].innerHTML = '|';
+                document.getElementsByClassName('Semicolon')[0].innerHTML = ':';
+                document.getElementsByClassName('Quote')[0].innerHTML = '"';
+                document.getElementsByClassName('Comma')[0].innerHTML = '<';
+                document.getElementsByClassName('Period')[0].innerHTML = '>';
+                document.getElementsByClassName('Slash')[0].innerHTML = '?';
+            }
+        }else if(capslock_on == 1){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toLowerCase();
+            }
+        }
+        if(lenguage == 'ru'){
+            var firstline_keyboard_shift = ['!','"','№',';','%',':','?','*','(',')','_','+'];
+            document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = '/';
+            document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = ',';
+        } else if(lenguage == 'en'){
+            var firstline_keyboard_shift = ['!','@','#','$','%','^','&','*','(',')','_','+'];
+            document.getElementsByClassName('Backquote')[0].innerHTML = '~';
+            document.getElementsByClassName('BracketLeft')[0].innerHTML = '{';
+            document.getElementsByClassName('BracketRight')[0].innerHTML = '}';
+            document.getElementsByClassName('Backslash')[0].innerHTML = '|';
+            document.getElementsByClassName('Semicolon')[0].innerHTML = ':';
+            document.getElementsByClassName('Quote')[0].innerHTML = '"';
+            document.getElementsByClassName('Comma')[0].innerHTML = '<';
+            document.getElementsByClassName('Period')[0].innerHTML = '>';
+            document.getElementsByClassName('Slash')[0].innerHTML = '?';
+        }
+        for(let i = 1; i<=document.getElementById('div_firstline_keyboard').querySelectorAll('.button').length-1; i++){
+            document.getElementById('div_firstline_keyboard').querySelectorAll('.button')[i].innerHTML = firstline_keyboard_shift[i-1];
+        }
+    }else if(event.target.classList.contains('right_shift')){
+        event.preventDefault();
+        document.getElementsByClassName('right_shift')[0].classList.add('button_active');
+        if(capslock_on == 0){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toUpperCase();
+            }
+            if(lenguage == 'ru'){
+                document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = '/';
+                document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = ',';
+            }else if(lenguage == 'en'){
+                document.getElementsByClassName('Backquote')[0].innerHTML = '~';
+                document.getElementsByClassName('BracketLeft')[0].innerHTML = '{';
+                document.getElementsByClassName('BracketRight')[0].innerHTML = '}';
+                document.getElementsByClassName('Backslash')[0].innerHTML = '|';
+                document.getElementsByClassName('Semicolon')[0].innerHTML = ':';
+                document.getElementsByClassName('Quote')[0].innerHTML = '"';
+                document.getElementsByClassName('Comma')[0].innerHTML = '<';
+                document.getElementsByClassName('Period')[0].innerHTML = '>';
+                document.getElementsByClassName('Slash')[0].innerHTML = '?';
+            }
+        }else if(capslock_on == 1){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toLowerCase();
+            }
+        }
+        if(lenguage == 'ru'){
+            var firstline_keyboard_shift = ['!','"','№',';','%',':','?','*','(',')','_','+'];
+            document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = '/';
+            document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = ',';
+        } else if(lenguage == 'en'){
+            var firstline_keyboard_shift = ['!','@','#','$','%','^','&','*','(',')','_','+'];
+            document.getElementsByClassName('Backquote')[0].innerHTML = '~';
+                document.getElementsByClassName('BracketLeft')[0].innerHTML = '{';
+                document.getElementsByClassName('BracketRight')[0].innerHTML = '}';
+                document.getElementsByClassName('Backslash')[0].innerHTML = '|';
+                document.getElementsByClassName('Semicolon')[0].innerHTML = ':';
+                document.getElementsByClassName('Quote')[0].innerHTML = '"';
+                document.getElementsByClassName('Comma')[0].innerHTML = '<';
+                document.getElementsByClassName('Period')[0].innerHTML = '>';
+                document.getElementsByClassName('Slash')[0].innerHTML = '?';
+        }
+        for(let i = 1; i<=document.getElementById('div_firstline_keyboard').querySelectorAll('.button').length-1; i++){
+            document.getElementById('div_firstline_keyboard').querySelectorAll('.button')[i].innerHTML = firstline_keyboard_shift[i-1];
+        }
+    }else if(event.target.classList.contains('ctrl')){
+        event.preventDefault();
+        document.getElementsByClassName('ctrl')[0].classList.add('button_active');
+    }else if(event.target.classList.contains('win')){
+        event.preventDefault();
+        document.getElementsByClassName('win')[0].classList.add('button_active');
+    }else if(event.target.classList.contains('alt')){
+        event.preventDefault();
+        document.getElementsByClassName('alt')[0].classList.add('button_active');
+    }else if(event.target.classList.contains('r_alt')){
+        event.preventDefault();
+        document.getElementsByClassName('r_alt')[0].classList.add('button_active');
+    }else if(event.target.classList.contains('space')){
+        event.preventDefault();
+        document.getElementsByClassName('space')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + ' ' + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, document.getElementById("textarea").innerHTML.length);
+    }else if(event.target.classList.contains('r_ctrl')){
+        event.preventDefault();
+        document.getElementsByClassName('r_ctrl')[0].classList.add('button_active');
+    }else if(event.target.classList.contains('up')){
+        event.preventDefault();
+        document.getElementsByClassName('up')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + '↑' + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, document.getElementById("textarea").innerHTML.length);
+    }else if(event.target.classList.contains('left')){
+        event.preventDefault();
+        document.getElementsByClassName('left')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + '←' + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, document.getElementById("textarea").innerHTML.length);
+    }else if(event.target.classList.contains('right')){
+        event.preventDefault();
+        document.getElementsByClassName('right')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + '→' + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, document.getElementById("textarea").innerHTML.length);
+    }else if(event.target.classList.contains('down')){
+        event.preventDefault();
+        document.getElementsByClassName('down')[0].classList.add('button_active');
+        document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + '↓' + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, document.getElementById("textarea").innerHTML.length);
+    }else if(event.target.classList.contains('button')){
+        event.preventDefault();
+        // for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+        //     if(document.getElementsByClassName('button')[i].classList.contains('button')){
+        //         document.getElementsByClassName('button')[i].classList.add('button_active');
+                document.getElementById("textarea").innerHTML = document.getElementById("textarea").innerHTML.slice(0, document.getElementById('textarea').selectionStart) + event.target.innerText + document.getElementById("textarea").innerHTML.slice(document.getElementById('textarea').selectionStart, document.getElementById("textarea").innerHTML.length);
+            // }
+        // }
+    }
+
+    if(event.target.classList.contains('backspace')){
+        document.getElementById('textarea').focus();
+        document.getElementById('textarea').selectionStart = karet_curpos-1;
+    }else if(event.target.classList.contains('delete')){
+        document.getElementById('textarea').focus();
+        document.getElementById('textarea').selectionStart = karet_curpos;
+    }else{
+        document.getElementById('textarea').focus();
+        document.getElementById('textarea').selectionStart = karet_curpos+1;
     }
 })
 
 
 document.addEventListener('mouseup', (event) => {
     event.target.classList.remove('button_active');
+    if(event.target.classList.contains('shift') || event.target.classList.contains('right_shift')){
+        event.preventDefault();
+        document.getElementsByClassName('shift')[0].classList.remove('button_active');
+        if(capslock_on == 0){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toLowerCase();
+            }
+            if(lenguage == 'ru'){
+                document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = String.fromCharCode(92);
+                document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = '.';
+            }else if(lenguage == 'en'){
+                document.getElementsByClassName('Backquote')[0].innerHTML = '`';
+                document.getElementsByClassName('BracketLeft')[0].innerHTML = '[';
+                document.getElementsByClassName('BracketRight')[0].innerHTML = ']';
+                document.getElementsByClassName('Backslash')[0].innerHTML = String.fromCharCode(92);
+                document.getElementsByClassName('Semicolon')[0].innerHTML = ';';
+                document.getElementsByClassName('Quote')[0].innerHTML = String.fromCharCode(39);
+                document.getElementsByClassName('Comma')[0].innerHTML = ',';
+                document.getElementsByClassName('Period')[0].innerHTML = '.';
+                document.getElementsByClassName('Slash')[0].innerHTML = '/';
+            }
+        }else if(capslock_on == 1){
+            for(let i = 0; i<= document.getElementsByClassName('button').length-1; i++){
+                document.getElementsByClassName('button')[i].innerHTML = document.getElementsByClassName('button')[i].innerText.toUpperCase();
+            }
+        }
+        if(lenguage == 'ru'){
+            document.getElementById('div_secondeline_keyboard').querySelectorAll('.button')[document.getElementById('div_secondeline_keyboard').querySelectorAll('.button').length-1].innerHTML = String.fromCharCode(92);
+            document.getElementById('div_fourthline_keyboard').querySelectorAll('.button')[document.getElementById('div_fourthline_keyboard').querySelectorAll('.button').length-1].innerHTML = '.';
+        }else if(lenguage == 'en'){
+            document.getElementsByClassName('Backquote')[0].innerHTML = '`';
+            document.getElementsByClassName('BracketLeft')[0].innerHTML = '[';
+            document.getElementsByClassName('BracketRight')[0].innerHTML = ']';
+            document.getElementsByClassName('Backslash')[0].innerHTML = String.fromCharCode(92);
+            document.getElementsByClassName('Semicolon')[0].innerHTML = ';';
+            document.getElementsByClassName('Quote')[0].innerHTML = String.fromCharCode(39);
+            document.getElementsByClassName('Comma')[0].innerHTML = ',';
+            document.getElementsByClassName('Period')[0].innerHTML = '.';
+            document.getElementsByClassName('Slash')[0].innerHTML = '/';
+        }
+        for(let i = 1; i<=document.getElementById('div_firstline_keyboard').querySelectorAll('.button').length-1; i++){
+            document.getElementById('div_firstline_keyboard').querySelectorAll('.button')[i].innerHTML = firstline_keyboard_not_shift[i-1];
+        } 
+    }    
     //document.getElementById('textarea').focus();
      //document.getElementById('textarea').selectionStart = document.getElementById('textarea').value.length;
 })
